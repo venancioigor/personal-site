@@ -1,7 +1,6 @@
-import { useLoaderData } from '@remix-run/react';
+import { Link, useLoaderData } from '@remix-run/react';
 import { LoaderFunction } from '@remix-run/node';
 import * as firstPost from './o-que-e-javascript-teste.mdx'
-import { Link } from 'remix';
 
 
 function postFromModule(mod) {
