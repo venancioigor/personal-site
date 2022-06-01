@@ -1,6 +1,8 @@
+
 import { Link, useLoaderData } from '@remix-run/react';
 import { LoaderFunction } from '@remix-run/node';
 import * as firstPost from './o-que-e-javascript-teste.mdx'
+import * as secondPost from './seja-util.mdx'
 
 
 function postFromModule(mod) {
@@ -10,19 +12,19 @@ function postFromModule(mod) {
     };
 }
 export const loader = () => {
-    return [postFromModule(firstPost)];
+    return [postFromModule(firstPost), postFromModule(secondPost)];
 };
 
 export default function BlogIndex() {
     const posts = useLoaderData();
     return (
         <div className='prose lg:prose-xl py-10 pl-10'>
-            <h2>Posts</h2>
+            <h3>Posts do Blog</h3>
             <div className='flex justify-center'>
                 <ul>
                     {posts.map((post) => (
-                        <li key={'posts/' + post.slug}>
-                            <Link to={'posts/' + post.slug}>{post.title}</Link>
+                        <li key={post.slug}>
+                            <Link to={post.slug}>{post.title}</Link>
                             {post.description ? (
                                 <p className='m-0 lg:m-0'>{post.description}</p>
                             ) : null}
