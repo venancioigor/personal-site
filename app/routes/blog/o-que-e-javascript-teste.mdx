@@ -6,118 +6,121 @@ meta:
     description: Entendendo testes em JavaScript from scratch!
 ---
 
-Testing software. There are a ton of reasons we do it. Here are two of mine:
+#### Testar código. 
 
-1.  Speeds up my workflow so I can develop software faster
-2.  Helps me ensure I don't break existing code when making changes
+Existem milhares de motivos para testar um código. Cito meus dois favoritos:
+1. Pensar no resultado que eu quero chegar antes de codar.  
+2. Confiança de que o que eu fiz não vai quebrar o software.
 
-That said, I have a few questions for you (these are twitter polls):
+Dito isso, eu tenho algumas **perguntas** para você:
+- Você já escreveu algum teste em Javascript?
+- Você já usou algum framework de teste em Javascript?
+- Você entende bem sobre framework de testes a ponto de criar um próprio, ainda que bem simples?
 
-- [Have you ever written a JavaScript test?](https://twitter.com/kentcdodds/status/942625485829181441)
-- [Have you ever used a JavaScript Testing Framework?](https://twitter.com/kentcdodds/status/942625486638759938)
-- [Have you ever set up a JavaScript testing framework from scratch?](https://twitter.com/kentcdodds/status/942625487511154688)
-- [Do you understand testing frameworks well enough to implement your own? (even a really simple one?)](https://twitter.com/kentcdodds/status/942625489348280320)
 
-The goal of this post is to get each of you to be able to answer "Yes" to that
-last question. So you have a fundamental understanding of what a test in
-JavaScript even is which will help you write better tests.
+O **objetivo** desse post é que você consiga responder "sim" para as perguntas que fiz acima, mas eu queria mesmo é que você
+sentisse o que eu senti ao conseguir respondê-las pela primeira vez quando terminei de ler o [post](https://kentcdodds.com/blog/but-really-what-is-a-javascript-test) do Kent C Dodds sobre esse assunto.
 
-So what we're going to do is take this simple `math.js` module and write tests
-for the two functions it exposes:
+#### Vamos começar! (E eu estou bem animado com isso!)
+
+Primeiro vamos criar um simples modulo `math.js` com duas funções de matemática
+e escrever testes para essas funções:
 
 ```js
-const sum = (a, b) => a + b
-const subtract = (a, b) => a - b
+const somar = (a, b) => a + b
+const subtrair = (a, b) => a - b
 
-module.exports = {sum, subtract}
+module.exports = {somar, subtrair}
 ```
 
-**I've made [a repo on GitHub](https://github.com/kentcdodds/js-test-example)
-you can reference as well 🐙😸**
+Fiz um [repo no GitHub](https://github.com/venancioigor/js-teste-exemplo)
+onde você pode se guiar, caso se perca em algum momento. Sugiro que você acesse
+o repo só em **último caso**, depois de tentar e pensar em como resolver por no mínimo dois dias. 😅
 
-### Step 1
 
-Here's the most basic form of a test I can think of:
+### Passo 1
+
+Qual é o teste mais básico que você consegue pensar?
+Eis um exemplo com variáveis em inglês. No final desse post você entenderá a razão.
 
 ```js
-// basic-test.js
+// teste-basico.js
 const actual = true
 const expected = false
 if (actual !== expected) {
-  throw new Error(`${actual} is not ${expected}`)
+  throw new Error(`${actual} é diferente de ${expected}`)
 }
 ```
+Voi lá! Temos o nosso primeiro teste!
 
-You could run this test code by running `node basic-test.js`! That's a test! 🎉
+Você pode rodá-lo digitando `node teste-basico.js` no console e apertando enter.
 
-**A test is code that throws an error when the actual result of something does
-not match the expected output.** It can get more complicated when you're dealing
-with code that depends on some state to be set up first (like a component needs
-to be rendered to the document before you can fire browser events, or there
-needs to be users in the database). However, it is relatively easy to test "pure
-functions" like those in our `math.js` module (functions which will always
-return the same output for a given input and not change the state of the world
-around them).
+**Como podemos ver, um teste é um código que lança um erro quando o resultado
+atual não é o resultado esperado.**
 
-**The part that says `actual !== expected` is called an "assertion."** It's a
-way to say in code that one thing should be a certain value or pass a certain...
-eh... test :) It could be an assertion that the `actual` matches a regex, is an
-array with a certain length, or any number of things. The key is that if our
-assertion fails, then we throw an error.
+A parte que faz essa verificação `actual !== expected` é chamada de **asserção**,
+que é basicamente verificar se o nosso resultado é igual ao resultado esperado.
+Se não for, lança-se uma exceção.
 
-So here's what the most basic test would be for our `math.js`function:
+Para saber mais sobre asserção, lógica proposal [clique aqui.](https://www.infoescola.com/matematica/logica-proposicional/)
+
+Então, qual é o teste mais básico que poderíamos fazer para as nossas funções do módulo `math.js`?
 
 ```js
 // 1.js
-const {sum, subtract} = require('./math')
+const {somar, subtrair} = require('./math')
 
 let result, expected
 
-result = sum(3, 7)
-expected = 10
-if (result !== expected) {
-  throw new Error(`${result} is not equal to ${expected}`)
-}
-
-result = subtract(7, 3)
+result = somar(2, 2)
 expected = 4
-if (result !== expected) {
-  throw new Error(`${result} is not equal to ${expected}`)
+
+if(result !== expected){
+  throw new Error(`${result} é diferente do resultado esperado: ${expected}`)
 }
+
+result = subtrair(4, 2)
+expected = 2
+
+if(result !== expected){
+  throw new Error(`${result} é diferente do resultado esperado: ${expected}`)
+}
+
 ```
 
-There you go! Run that with `node` and the command will exit without error. Now,
-let's break the `sum` function by changing the `+` to a `-` and run it again and
-we'll see:
+Rodando esses testes `node 1.js` você vai ver que não nenhum erro apareceu no console.
+Agora vamos fazer esse teste quebrar? No modulo math.js, vamos alterar o comportamento
+da função somar para ao invés de somar, subtrair.
 
+```js
+// math.js
+const somar = (a, b) => a - b
 ```
+
+Pronto!
+
+```js
 $ node 1.js
-/Users/kdodds/Desktop/js-test-example/1.js:8
-  throw new Error(`${result} is not equal to ${expected}`)
-  ^
+C:\source\github\js-teste-exemplo\1.js:10
+    throw new Error(`${actual} é diferente do resultado esperado ${expected}`)
+    ^
 
-Error: -4 is not equal to 10
-    at Object.<anonymous> (/Users/kdodds/Desktop/js-test-example/1.js:8:9)
-    at Module._compile (module.js:635:30)
-    at Object.Module._extensions..js (module.js:646:10)
-    at Module.load (module.js:554:32)
-    at tryModuleLoad (module.js:497:12)
-    at Function.Module._load (module.js:489:3)
-    at Function.Module.runMain (module.js:676:10)
-    at startup (bootstrap_node.js:187:16)
-    at bootstrap_node.js:608:3
+Error: 0 é diferente de 4
+    at Object.<anonymous> (C:\source\github\js-teste-exemplo\1.js:10:11)
+    at Module._compile (node:internal/modules/cjs/loader:1103:14)
+    at Object.Module._extensions..js (node:internal/modules/cjs/loader:1155:10)
+    at Module.load (node:internal/modules/cjs/loader:981:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:77:12)
+    at node:internal/main/run_main_module:17:47
 ```
 
-Cool! We're benefitting from our basic tests already! We can't break the `sum`
-function without breaking our automated test! Neato!
+Deu para perceber que não podemos fazer alguma alteração na função `somar`
+sem que quebre os nossos testes automáticos? Estamos protegidos!
 
-**One of the most important parts of testing frameworks (or assertion libraries)
-is how helpful their error messages are.** Often when a test fails, the first
-thing you'll see is the error message. If you can't figure out what the
-underlying problem is from the error message, then you have to spend a few
-minutes looking at the code to understand what went wrong. A lot of the quality
-of the error message depends on how well you understand and use the assertions
-provided by the framework you're using.
+**É essencial que a mensagem de erro seja clara e concisa, onde podemos rapidamente
+ver onde está o problema e corrigir.**
+
 
 ### Step 2
 
