@@ -122,275 +122,347 @@ sem que quebre os nossos testes automáticos? Estamos protegidos!
 ver onde está o problema e corrigir.**
 
 
-### Step 2
+### Passo 2
 
-Did you know that Node actually has
-[an](https://nodejs.org/api/assert.html#assert_assert)
-[`assert`](https://nodejs.org/api/assert.html#assert_assert)
-[module](https://nodejs.org/api/assert.html#assert_assert) for making assertions
-like the one we have above 🤔? Let's refactor our test to use that module!
+Você sabia que o Node tem
+[`um`](https://nodejs.org/api/assert.html#assert_assert)
+[module](https://nodejs.org/api/assert.html#assert_assert)
+para fazer *asserções* como as que fizemos acima🤔?
+Que tal refatorar o nosso teste para utilizar esse módulo?
 
 ```js
 // 2.js
 const assert = require('assert')
-const {sum, subtract} = require('./math')
+const {somar, subtrair} = require('./math')
 
 let result, expected
 
-result = sum(3, 7)
-expected = 10
+result = somar(4, 2)
+expect = 6
+
 assert.strictEqual(result, expected)
 
-result = subtract(7, 3)
-expected = 4
+result = subtrair(4, 2)
+expect = 2
+
 assert.strictEqual(result, expected)
 ```
 
-Nice! This is still a test module. This is functionally equivalent to what we
-had before. The only difference is the error message:
+Certo, agora execute o `node 2.js`no terminal.
+Repara que continua sendo um código de teste, a única diferença está na mensagem de erro.
 
-```
-$ node 2.js
-assert.js:42
-  throw new errors.AssertionError({
+```js
+node:assert:123
+  throw new AssertionError(obj);
   ^
 
-AssertionError [ERR_ASSERTION]: -4 === 10
-    at Object.<anonymous> (/Users/kdodds/Desktop/js-test-example/2.js:8:8)
-    at Module._compile (module.js:635:30)
-    at Object.Module._extensions..js (module.js:646:10)
-    at Module.load (module.js:554:32)
-    at tryModuleLoad (module.js:497:12)
-    at Function.Module._load (module.js:489:3)
-    at Function.Module.runMain (module.js:676:10)
-    at startup (bootstrap_node.js:187:16)
-    at bootstrap_node.js:608:3
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+    at Object.<anonymous> (C:\source\github\js-teste-exemplo\2.js:9:8)
+    at Module._compile (node:internal/modules/cjs/loader:1103:14)
+    at Object.Module._extensions..js (node:internal/modules/cjs/loader:1155:10)
+    at Module.load (node:internal/modules/cjs/loader:981:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:77:12)
+    at node:internal/main/run_main_module:17:47 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: -4,
+  expected: 10,
+  operator: 'strictEqual'
+}
 ```
 
-You'll notice that the error thrown no longer includes any of our own code in it
-which is a shame... 😦 But let's keep going.
+No teste que a gente criou, a mensagem de erro diz a linha onde que foi lançado o erro,
+mas utilizando o modulo que já vem com o node, a mensagem de erro só nos diz que o resultado
+é diferente do esperado. 
 
-### Step 3
+Então, como saber se o teste falhou na função somar ou na de subtrair? **não tem como!** 😦
 
-Let's go ahead and write our own simple testing "framework" and assertion
-library. We'll start with the assertion library. So instead of Node's built-in
-`assert` module we'll create a library we'll call `expect`. Here's our
-refactored test with that change:
+### Passo 3
+
+Que tal criar a nossa própria lib para fazer asserções? Assim que gente passa a estar no controle!
+Ao invés de chamar o módulo `assert` vamos criar uma função chamada `expect`.  😎
+
+Vamos criar um novo arquivo chamado 3.js:
 
 ```js
 // 3.js
-const {sum, subtract} = require('./math')
+const {somar, subtrair} = require('./math')
 
 let result, expected
 
-result = sum(3, 7)
-expected = 10
+result = somar(4, 2)
+expected = 6
+
 expect(result).toBe(expected)
 
-result = subtract(7, 3)
-expected = 4
-expect(result).toBe(expected)
+result = subtrair(4, 2)
+expected = 2
 
-function expect(actual) {
+
+// Criando a nossa função expect, aplicando os conceitos aprendidos anteriormente.
+function expect(result){
   return {
-    toBe(expected) {
-      if (actual !== expected) {
-        throw new Error(`${actual} is not equal to ${expected}`)
+      toBe(expected){
+        if (result !== expected){
+          throw new Error(`${result} é diferente de ${expected}`)
+        } 
       }
-    },
   }
 }
 ```
-
-Cool, so now we can add a bunch of assertions on that object we return (like
-`toMatchRegex` or `toHaveLength`). Oh, and here's the error message now:
-
+Agora ao executar `node 3.js` temos a seguinte mensagem de erro:
+```js
+C:\source\github\js-teste-exemplo\3.js:16
+                throw new Error(`${actual} é diferente de ${expected}`)
+                ^
+Error: 2 é diferente de 6
+    at Object.toBe (C:\source\github\js-teste-exemplo\3.js:16:23)
+    at Object.<anonymous> (C:\source\github\js-teste-exemplo\3.js:10:16)
+    at Module._compile (node:internal/modules/cjs/loader:1103:14)
+    at Object.Module._extensions..js (node:internal/modules/cjs/loader:1155:10)
+    at Module.load (node:internal/modules/cjs/loader:981:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:77:12)
+    at node:internal/main/run_main_module:17:47
 ```
-$ node 3.js
-/Users/kdodds/Desktop/js-test-example/3.js:17
-        throw new Error(`${actual} is not equal to ${expected}`)
-        ^
+Certo, voltamos a saber em qual linha `js-teste-exemplo\3.js:10:16` fez o código lançar o erro.
+Melhor, mas ainda não tão claro como o nome da função. O que fazer então?
 
-Error: -4 is not equal to 10
-    at Object.toBe (/Users/kdodds/Desktop/js-test-example/3.js:17:15)
-    at Object.<anonymous> (/Users/kdodds/Desktop/js-test-example/3.js:7:16)
-    at Module._compile (module.js:635:30)
-    at Object.Module._extensions..js (module.js:646:10)
-    at Module.load (module.js:554:32)
-    at tryModuleLoad (module.js:497:12)
-    at Function.Module._load (module.js:489:3)
-    at Function.Module.runMain (module.js:676:10)
-    at startup (bootstrap_node.js:187:16)
-    at bootstrap_node.js:608:3
-```
+### Passo 4
 
-Ok, things are looking good.
+Criando o arquivo `4.js`.
 
-### Step 4
-
-But now here's the problem 😖... If I see that error message, how do I know that
-the `sum` function is the one that's broken? It could be the `subtract` module.
-Also, the source of the test doesn't do a good job of keeping tests isolated
-(visually or otherwise).
-
-So let's write a helper function to make that work:
+Vamos escrever uma função para nos ajudar a solucionar o nosso problema.😊
 
 ```js
-// 4.js
-const {sum, subtract} = require('./math')
+const {somar, subtrair} = require('./math')
 
-test('sum adds numbers', () => {
-  const result = sum(3, 7)
-  const expected = 10
+let result, expected
+
+test('Somar', () => {
+  result = somar(4, 2)
+  expected = 6
   expect(result).toBe(expected)
 })
 
-test('subtract subtracts numbers', () => {
-  const result = subtract(7, 3)
-  const expected = 4
+test('Subtrair', () => {
+  result = subtrair(4, 2)
+  expected = 2
   expect(result).toBe(expected)
 })
 
-function test(title, callback) {
+// função criada no passo anterior
+function expect(result){
+  return {
+      toBe(expected){
+        if (result !== expected){
+          throw new Error(`${result} é diferente de ${expected}`)
+        } 
+      }
+  }
+}
+
+// nossa função auxiliar
+function test(nomeDaFuncao, callback){
   try {
     callback()
-    console.log(`✓ ${title}`)
+    console.log(`✓ - A função ${nomeDaFunca} passou no teste!`)
   } catch (error) {
-    console.error(`✕ ${title}`)
-    console.error(error)
+    console.log(`X - A função ${nomeDaFunca} NÃO passou no teste!`)
+    console.log(error)
   }
 }
+```
 
-function expect(actual) {
+Ao executar `node 4.js` temos agora uma mensagem de erro **personalizada**, sabendo claramente
+qual é o nome da função que não passou no nosso teste!  😌
+
+```js
+PS C:\source\github\js-teste-exemplo> node 4
+X - A função somar não passou no teste!
+Error: 2 é diferente de 6!
+    at Object.toBe (C:\source\github\js-teste-exemplo\4.js:37:23)
+    at C:\source\github\js-teste-exemplo\4.js:10:20
+    at test (C:\source\github\js-teste-exemplo\4.js:24:9)
+    at Object.<anonymous> (C:\source\github\js-teste-exemplo\4.js:6:1)
+    at Module._compile (node:internal/modules/cjs/loader:1103:14)
+    at Object.Module._extensions..js (node:internal/modules/cjs/loader:1155:10)
+    at Module.load (node:internal/modules/cjs/loader:981:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:822:12)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:77:12)
+    at node:internal/main/run_main_module:17:47
+✓ - A função subtrair passou no teste!
+```
+#### Passo 5
+
+Agora vamos extrair essas duas funções e colocar em um novo arquivo chamado `minhaLibDeTeste.js` 
+(você pode batizá-lo com qualquer nome que achar conveniente)
+
+Esse novo arquivo vai ficar assim:
+```js
+// minhaLibDeTeste
+function expect(result){
   return {
-    toBe(expected) {
-      if (actual !== expected) {
-        throw new Error(`${actual} is not equal to ${expected}`)
+      toBe(expected){
+        if (result !== expected){
+          throw new Error(`${result} é diferente de ${expected}`)
+        } 
       }
-    },
   }
 }
+
+/* Ao invés de só extrair a função test, vamos deixá-la mais interessante?
+Que tal cores para ficar visualmente melhor?
+  - Verde para testes que passaram
+  - Vermelho para testes que falharam
+*/
+
+function test(nomeDaFuncao, callback){
+  try {
+    callback()
+    console.log('\u001b[1;32m' + `✓ - A função ${nomeDaFunca} passou no teste!` + '\u001b[0m')
+  } catch (error) {
+    console.log('\u001b[1;31m' + `X - A função ${nomeDaFunca} NÃO passou no teste!` '\u001b[0m')
+    console.log(error)
+  }
+}
+
+module.exports = { expect, test }
 ```
 
-Now we can put everything relevant to a given test within our "test" callback
-function and we can give that test a name. Then we use that `test` function to
-not only give a more helpful error message but also run all the tests in the
-file (without bailing on the first error)! Here's the output now:
+#### Passo 6
 
-```
-$ node 4.js
-✕ sum adds numbers
-Error: -4 is not equal to 10
-    at Object.toBe (/Users/kdodds/Desktop/js-test-example/4.js:29:15)
-    at test (/Users/kdodds/Desktop/js-test-example/4.js:6:18)
-    at test (/Users/kdodds/Desktop/js-test-example/4.js:17:5)
-    at Object.<anonymous> (/Users/kdodds/Desktop/js-test-example/4.js:3:1)
-    at Module._compile (module.js:635:30)
-    at Object.Module._extensions..js (module.js:646:10)
-    at Module.load (module.js:554:32)
-    at tryModuleLoad (module.js:497:12)
-    at Function.Module._load (module.js:489:3)
-    at Function.Module.runMain (module.js:676:10)
-✓ subtract subtracts numbers
-```
-
-Sweet! Now we see the error itself _and_ we see the title of the test so we know
-which one to go about fixing.
-
-### Step 5
-
-So all we need to do now is
-[write a CLI tool](/blog/tips-for-making-a-cli-based-tool-with-node) that will
-search for all our test files and run them! That bit is pretty simple at first,
-but there are a LOT of things we can add on top of it. 😅
-
-At this point, we're building a testing framework and test runner. Luckily for
-us, there are a bunch of these built already! I've tried a ton of them and
-they're all great. That said, nothing comes close to serving my use cases better
-than [Jest](https://facebook.github.io/jest) 🃏. It's an amazing tool
-([learn more about Jest here](http://kcd.im/egghead-jest)).
-
-So, instead of building our own framework, let's just go ahead and switch our
-test file to work with Jest. As it so happens, it already does! All we have to
-do is remove our own implementation of `test` and `expect` because Jest includes
-those in our tests as global objects! So here's what it looks like now:
+Agora que você criou a sua lib de testes `minhaLibDeTeste`, vamos utilizá-la para fazer nosso teste,
+criando o arquivo 5.js
 
 ```js
 // 5.js
-const {sum, subtract} = require('./math')
+const {somar, subtrair} = require('./math')
+const {expect, test} = require('./minhaLibDeTeste')
 
-test('sum adds numbers', () => {
-  const result = sum(3, 7)
-  const expected = 10
+let result, expected
+
+test('somar', () => {
+  result = somar(4, 2)
+  expected = 6
+
+  expected(result).toBe(expected)
+})
+
+test('subtrair', () => {
+  result = subtrair(4, 2)
+  expected = 2
+
+  expected(result).toBe(expected)
+})
+
+```
+
+Execute `node 5.js`e veja a mágica acontecer. Voilà! 😜
+
+
+#### Passo 6
+
+Por fim, vamos utilizar um ótimo framework de teste, que é muito utilizado no mercado,
+chamado [Jest](https://github.com/facebook/jest). ([Saiba mais sobre Jest aqui](http://kcd.im/egghead-jest)).
+
+**instalação** : abra o seu terminal e cole `npm install --save-dev jest`
+Após o término da instalação, abre o seu `package.json` e, para facilitar, adicione as seguintes linhas:
+
+```js
+"scripts": {
+    "test": "jest",
+    "test:all": "node 1.js && node 2.js && node 3.js && node 4.js && jest"
+  },
+"jest": {
+    "testMatch": ["**/6.js"]
+  }
+```
+
+Agora crie o arquivo `6.js` e digite o código abaixo. Repara que você não mais precisa importar
+a função `test` e nem `expect`. Isso porque o Jest tem exatamente essas funções em seu framework
+e mais! funcionam exatamente como nós a criamos! 🤯
+
+Isso mesmo, você criou funções que existem no framework de teste de JavaScript mais popular! 👏
+
+```js
+// 6.js
+const {somar, subtrair} = require('./math')
+
+test('somar', () => {
+  const result = somar(4, 2)
+  const expected = 6
   expect(result).toBe(expected)
 })
 
-test('subtract subtracts numbers', () => {
-  const result = subtract(7, 3)
-  const expected = 4
+test('subtrair', () => {
+  const result = subtrair(4, 2)
+  const expected = 2
   expect(result).toBe(expected)
 })
 ```
 
-When we run this file with Jest, here's what the output looks like:
+Para executar o teste basta executar `npm test` que o node vai testar o arquivo `6.js`.
 
-```
-$ jest
- FAIL  ./5.js
-  ✕ sum adds numbers (5ms)
-  ✓ subtract subtracts numbers (1ms)
+[Screenshot do output - colorido](https://res.cloudinary.com/igorvenancio-com/image/upload/v1654173958/samples/testeColorido_dndv66.jpg)
 
-● sum adds numbers
+```js
+C:\source\github\js-teste-exemplo> npm test
 
-expect(received).toBe(expected)
+> js-teste-examplo@1.0.0 test
+> jest
 
-    Expected value to be (using Object.is):
-      10
-    Received:
-      -4
+ FAIL  ./6.js
+  × somar (4 ms)
+  √ subtrair
 
-      4 |   const result = sum(3, 7)
-      5 |   const expected = 10
-    > 6 |   expect(result).toBe(expected)
-      7 | })
-      8 |
-      9 | test('subtract subtracts numbers', () => {
+  ● somar
 
-      at Object.<anonymous>.test (5.js:6:18)
+    expect(received).toBe(expected) // Object.is equality
 
-Test Suites: 1 failed, 1 total
-Tests:       1 failed, 1 passed, 2 total
+    Expected: 6
+    Received: 2
+
+       7 |     expected = 6
+       8 |
+    >  9 |     expect(result).toBe(expected)
+         |                    ^
+      10 | })
+      11 |
+      12 | test('subtrair', () => {
+
+      at Object.toBe (6.js:9:20)
+
+Test Suites: 1 failed, 1 total                                                                                                           
+Tests:       1 failed, 1 passed, 2 total                                                                                                 
 Snapshots:   0 total
-Time:        0.6s, estimated 1s
+Time:        0.437 s, estimated 1 s
 Ran all test suites.
 ```
 
-You can't tell from the text, but that output is colored. Here's an image of the
-output:
+Por texto não é possível ver exatamente as cores do output, mas segue uma imagem
+que tirei do meu console agora:
 
-![Screenshot of the output from running jest](https://res.cloudinary.com/kentcdodds-com/image/upload/v1625032584/kentcdodds.com/content/blog/but-really-what-is-a-javascript-test/0.png)
+[Screenshot usando Jest](https://res.cloudinary.com/igorvenancio-com/image/upload/v1654173959/samples/testeComJest_lt5a3d.jpg)
 
-It has color coding which is really helpful in identifying the parts that are
-relevant 😀 **It also shows the code where the error was thrown! Now _that's_ a
-helpful error message!**
 
-### Conclusion
+### Conclusão
 
-So, what's a JavaScript test? It's simply some code which sets up some state,
-performs some action, and makes an assertion on the new state. We didn't talk
-about
-[common framework helper functions](https://facebook.github.io/jest/docs/en/api.html)
-like
-[`beforeEach`](https://facebook.github.io/jest/docs/en/api.html#beforeeachfn-timeout)
-or
-[`describe`](https://facebook.github.io/jest/docs/en/api.html#describename-fn),
-and there are a lot more
-[assertions](https://facebook.github.io/jest/docs/en/expect.html) we could add
-like
-[`toMatchObject`](https://facebook.github.io/jest/docs/en/expect.html#tomatchobjectobject)
-or
-[`toContain`](https://facebook.github.io/jest/docs/en/expect.html#tocontainitem).
-But hopefully this gives you an idea of the fundamental concepts of testing with
-JavaScript.
+Então, o que é um teste em Javacript? Basicamente é algum código onde nós definimos algum estado,
+executamos alguma ação e fazemos uma asserção no novo estado para verificar se o código respondeu
+como nós queríamos que respondesse.
 
-I hope this is helpful to you! Good luck! 👍
+Não nos aprofundamos sobre outras funções de teste, mas espero que esse post tenha
+conseguido te dar uma ideia do fundamento que está por trás de todos os testes.
+
+Espero que esse post tenha sido útil para você! 👍
+
+Um abraço,
+
+Igor Venancio
+
+
+Obs.: **Compartilhe** com alguém que se interessaria por esse assunto.
+
+
