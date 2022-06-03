@@ -12,7 +12,7 @@ export const links = () => {
 
 export default function Blog() {
     return (
-        <div className='text-center sm:text-left flex justify-center'>
+        <div className='flex justify-center'>
             <div className='prose sm:prose-base lg:prose-xl py-10'>
                 <Outlet />
             </div>
