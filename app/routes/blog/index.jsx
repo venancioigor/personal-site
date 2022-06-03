@@ -3,9 +3,6 @@ import { Link, useLoaderData } from '@remix-run/react';
 import { LoaderFunction } from '@remix-run/node';
 import * as firstPost from './o-que-e-javascript-teste.mdx'
 import * as secondPost from './seja-util.mdx'
-import * as aniverPost from './aniversariante-do-dia.mdx'
-
-
 
 function postFromModule(mod) {
     return {
@@ -14,7 +11,7 @@ function postFromModule(mod) {
     };
 }
 export const loader = () => {
-    return [postFromModule(firstPost), postFromModule(secondPost), postFromModule(aniverPost)];
+    return [postFromModule(firstPost), postFromModule(secondPost)];
 };
 
 export default function BlogIndex() {

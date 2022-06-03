@@ -1,12 +1,13 @@
 ---
-title: But really, what is a JavaScript test?
-date: 2018-01-01
+title: Teste Javascript
+date: 2022-06-03
 meta:
     title: Teste Javascript
-    description: Entendendo testes em JavaScript from scratch!
+    description: Entendendo testes em JavaScript do zero!
 ---
 
-#### Testar código. 
+#### Teste de código. 
+(9 minutos de leitura)
 
 Existem milhares de motivos para testar um código. Cito meus dois favoritos:
 1. Pensar no resultado que eu quero chegar antes de codar.  
@@ -22,6 +23,8 @@ O **objetivo** desse post é que você consiga responder "sim" para as perguntas
 sentisse o que eu senti ao conseguir respondê-las pela primeira vez quando terminei de ler o [post](https://kentcdodds.com/blog/but-really-what-is-a-javascript-test) do Kent C Dodds sobre esse assunto.
 
 #### Vamos começar! (E eu estou bem animado com isso!)
+
+<img style={{marginLeft:'auto', marginRight:'auto'}} width="200" height="300" src="https://i.giphy.com/media/MdqE46HziuFJTlIwjw/giphy.webp" />
 
 Primeiro vamos criar um simples modulo `math.js` com duas funções de matemática
 e escrever testes para essas funções:
@@ -361,6 +364,12 @@ test('subtrair', () => {
 
 Execute `node 5.js`e veja a mágica acontecer. Voilà! 😜
 
+![Screenshot do output - colorido](https://res.cloudinary.com/igorvenancio-com/image/upload/v1654173958/samples/testeColorido_dndv66.jpg)
+
+Agora o nosso log ficou visualmente mais fácil de ser lido.
+
+<img style={{marginLeft:'auto', marginRight:'auto'}} width="350" height="300" src="https://media.giphy.com/media/vFKqnCdLPNOKc/giphy.gif" />
+
 
 #### Passo 6
 
@@ -384,8 +393,6 @@ Agora crie o arquivo `6.js` e digite o código abaixo. Repara que você não mai
 a função `test` e nem `expect`. Isso porque o Jest tem exatamente essas funções em seu framework
 e mais! funcionam exatamente como nós a criamos! 🤯
 
-Isso mesmo, você criou funções que existem no framework de teste de JavaScript mais popular! 👏
-
 ```js
 // 6.js
 const {somar, subtrair} = require('./math')
@@ -403,9 +410,12 @@ test('subtrair', () => {
 })
 ```
 
-Para executar o teste basta executar `npm test` que o node vai testar o arquivo `6.js`.
+Isso mesmo, você **criou** funções que existem no framework de teste JavaScript mais popular! 👏
 
-[Screenshot do output - colorido](https://res.cloudinary.com/igorvenancio-com/image/upload/v1654173958/samples/testeColorido_dndv66.jpg)
+<img style={{marginLeft:'auto', marginRight:'auto'}} width="300" height="300" src="https://i.giphy.com/media/IwAZ6dvvvaTtdI8SD5/giphy.webp" />
+
+
+Para executar o teste basta executar `npm test` que o node vai testar o arquivo `6.js`.
 
 ```js
 C:\source\github\js-teste-exemplo> npm test
@@ -444,7 +454,7 @@ Ran all test suites.
 Por texto não é possível ver exatamente as cores do output, mas segue uma imagem
 que tirei do meu console agora:
 
-[Screenshot usando Jest](https://res.cloudinary.com/igorvenancio-com/image/upload/v1654173959/samples/testeComJest_lt5a3d.jpg)
+![Screenshot usando Jest](https://res.cloudinary.com/igorvenancio-com/image/upload/v1654173959/samples/testeComJest_lt5a3d.jpg)
 
 
 ### Conclusão
@@ -453,16 +463,29 @@ Então, o que é um teste em Javacript? Basicamente é algum código onde nós d
 executamos alguma ação e fazemos uma asserção no novo estado para verificar se o código respondeu
 como nós queríamos que respondesse.
 
-Não nos aprofundamos sobre outras funções de teste, mas espero que esse post tenha
-conseguido te dar uma ideia do fundamento que está por trás de todos os testes.
+Não nos aprofundamos sobre outras funções de teste, porque não era o objetivo desse post, mas espero que agora
+você tenha uma ideia do fundamento de todos os testes.
 
-Espero que esse post tenha sido útil para você! 👍
+Que esse post tenha sido útil para você! 👍
 
 Um abraço,
-
 Igor Venancio
+
+
 
 
 Obs.: **Compartilhe** com alguém que se interessaria por esse assunto.
 
+Fonte de inspiração: [post do Kent C Dodds sobre JS Test](https://kentcdodds.com/blog/but-really-what-is-a-javascript-test)
+
+<div lg:flex>
+  <img
+    style={{marginLeft:'auto', marginRight:'auto'}}
+    width="250" height="250"
+    src="https://c.tenor.com/gK9Yd_xrxrIAAAAC/yoda-star-wars.gif" />
+<img
+    style={{marginLeft:'auto', marginRight:'auto'}}
+    width="250" height="250"
+    src="https://c.tenor.com/UwbYxIzEPpwAAAAC/teach-you-yoda.gif" />
+</div>
 
