@@ -3,11 +3,11 @@ import { Link } from '@remix-run/react';
 export default function Index() {
   return (
     <body>
-      <div className='flex justify-center' style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.4" }}>
+      <div className='' style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.4" }}>
         <br />
         <div className='prose lg:prose-xl py-10'>
           <p>"Busquem ser úteis. Isso é muito difícil." Elon Musk</p>
-          <ul>
+          <ul >
             <li>
               <Link to={'/blog'}>
                 Blog
