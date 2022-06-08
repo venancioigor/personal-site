@@ -19,7 +19,7 @@ export const links = () => {
 
 export const meta = () => ({
   charset: "utf-8",
-  title: "New Remix App",
+  title: "Igor Venancio Blog",
   viewport: "width=device-width,initial-scale=1",
 });
 

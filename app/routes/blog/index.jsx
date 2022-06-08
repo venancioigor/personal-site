@@ -19,7 +19,7 @@ export default function BlogIndex() {
     return (
         <div className='prose lg:prose-xl py-10 pl-10'>
             <h3>Posts do Blog</h3>
-            <div className='flex justify-center'>
+            <div className=''>
                 <ul>
                     {posts.map((post) => (
                         <li key={post.slug}>
