@@ -2,10 +2,10 @@ import { Link } from '@remix-run/react';
 
 export default function Index() {
   return (
-    <body>
-      <div className='' style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.4" }}>
+    <body className=''>
+      <div className=''>
         <br />
-        <div className='prose lg:prose-xl py-10'>
+        <div className='m-auto prose lg:prose-xl py-10' style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.4" }}>
           <p>"Busquem ser úteis. Isso é muito difícil." Elon Musk</p>
           <ul >
             <li>
