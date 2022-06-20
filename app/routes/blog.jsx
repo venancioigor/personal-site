@@ -12,7 +12,7 @@ export const links = () => {
 
 export default function Blog() {
     return (
-        <div className='m-auto prose sm:prose-base lg:prose-xl py-10'>
+        <div className='m-auto prose sm:prose-base lg:prose-xl py-10 prose-a:text-blue-600'>
             <Outlet />
         </div>
     )
