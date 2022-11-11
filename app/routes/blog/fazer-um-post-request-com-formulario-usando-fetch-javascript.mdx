@@ -1,0 +1,131 @@
+---
+title: Fazer um POST com FetchApi e FormData
+date: 2022-11-09
+meta:
+    title: Fazer um POST com FetchApi e FormData
+    description: Como fazer um POST usando FetchApi e FormData
+---
+
+## Como fazer um POST usando Fetch Api e FormData
+
+#### Case - Você tem um formulário html e deseja enviar, através do método POST, os dados que o seu usuário inputou, para um servidor que vai receber esses dados e fazer a persistência.
+
+### Para simular tal cenário, vamos precisar de:
+
+1. Um formulário HTML simples;
+2. Javascript puro Fetch Api e FormData;
+3. Uma api de testes, chamada REQRES de URL 'https://reqres.in/';
+
+## Primeiro passo - montar o HTML com o nosso formulário
+
+```html
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fazer um POST com FetchApi e FormData</title>
+</head>
+<body>
+    <form class="form" id="formulario">
+        <input name="usuario" type="text" placeholder="usuario">
+        <input name="senha" type="password" placeholder="senha">
+        <input name="checkbox" type="checkbox">
+
+        <button type="submit">Enviar</button>
+    </form>
+</body>
+</html>
+```
+
+Que resultará em:
+
+![Screenshot do output - colorido](https://res.cloudinary.com/igorvenancio-com/image/upload/v1668131060/Blog/visualizacao_html_okb84d.jpg)
+
+É um formulário bem simples como você pode ver, mas que vai nos ajudar a entender todo o processo.
+
+**Com nosso formulário pronto, agora vamos nos dedicar ao javascript.**
+
+Primeiro vamos capturar o elemento formulário, colocando-o em uma variável, usando o método
+getElemenyById e passando, entre aspas, o Id desse elemento :
+```js
+const formEl = document.getElemenyById('formulario')
+```
+Agora que temos o nosso elemento capturado, vamos chamar o método addEventListener para pedir ao javascript
+que faça algo quando um certo evento acontecer nesse elemento. 
+
+#### No nosso caso, qual evento? Submit. Fazer o que? Enviar os dados do formulário para o servidor via POST.
+
+
+Precisamos agora criar um objeto do tipo **FormData**, passando o nosso elemento formulário como parâmetro, pois usaremos ele logo em seguida.
+```js
+formEl.addEventListener('submit', event => {
+    event.preventDefault();
+    
+    const formData = new FormData(formularioEl) 
+                                                
+```
+
+É necessário fazer assim para conseguirmos, de maneira simples, coletar os valores de cada input do formulário. 
+
+#### Executando o console.log(formData), temos:
+![](https://res.cloudinary.com/igorvenancio-com/image/upload/v1668131060/Blog/print_do_formData_gqjjuy.jpg)
+
+Agora vamos usar o método fromEntries do Object, que recebe como parâmetro um objeto FormData **(olha ele ai!)** e retorna
+todos os valores que estão em cada input desse formulário.
+```js
+    const data = Object.fromEntries(formData);
+                                                                                                
+})
+```
+
+Mais uma vez, usando o console.log(data) para visualizarmos o que tem nessa variável, podemos ver que esse método criou um objeto usando o placeholder de cada input como chave e o value como valor dessa chave.
+![](https://res.cloudinary.com/igorvenancio-com/image/upload/v1668131060/Blog/print_ObjectFromEntries_jopdpj.jpg)
+
+E agora falta só chamar o método fetch, escolhendo o método de requisição POST,
+especificando no headers que o tipo do conteúdo da requisição é json e,
+obviamente, transformando esses dados em JSON e os enviando no body.
+
+```js
+fetch('https://reqres.in/api/users', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+})
+    .then(res => res.json())
+    .then(data => console.log(data))
+    .catch(error => console.log(error))
+```
+
+**E pronto!**
+
+Ao digitar o nome de usuário, senha, marcar ou não o checkbox e clicar no botão 'Enviar', nosso client faz essa requisição para o servidor, que retorna 201, pois essa requisição
+foi satisfeita e um novo recurso foi criado, como podemos ver nos prints abaixo:
+
+![](https://res.cloudinary.com/igorvenancio-com/image/upload/v1668131060/Blog/resposta_servidor_201_ozmczc.jpg)
+
+O console do browser:
+![](https://res.cloudinary.com/igorvenancio-com/image/upload/v1668131060/Blog/retorno_servidor_zron68.jpg)
+
+Espero que esse post tenha sido útil para você! 👍
+
+Um abraço,
+Igor Venancio
+
+
+
+
+Obs.: **Compartilhe** com alguém que se beneficiaria ao aprender esse conteúdo.
+
+<div lg:flex>
+  <img
+    style={{marginLeft:'auto', marginRight:'auto'}}
+    width="250" height="250"
+    src="https://c.tenor.com/gK9Yd_xrxrIAAAAC/yoda-star-wars.gif" />
+<img
+    style={{marginLeft:'auto', marginRight:'auto'}}
+    width="250" height="250"
+    src="https://c.tenor.com/UwbYxIzEPpwAAAAC/teach-you-yoda.gif" />
+</div>
