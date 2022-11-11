@@ -893,6 +893,11 @@ Ensure the default browser behavior of the `hidden` attribute.
   padding-left: 2.5rem;
 }
 
+.prose-a\:text-blue-600 :is(:where(a):not(:where([class~="not-prose"] *))) {
+  --tw-text-opacity: 1;
+  color: rgb(37 99 235 / var(--tw-text-opacity));
+}
+
 @media (min-width: 1024px) {
   .lg\:prose-xl {
     font-size: 1.25rem;

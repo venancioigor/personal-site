@@ -18,7 +18,7 @@ export const loader = () => {
 export default function BlogIndex() {
     const posts = useLoaderData();
     return (
-        <div className='prose lg:prose-xl py-10 pl-10'>
+        <div className='prose  lg:prose-xl py-10 pl-10'>
             <h3>Posts do Blog</h3>
             <div className=''>
                 <ul>

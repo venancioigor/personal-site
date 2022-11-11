@@ -26,8 +26,11 @@ sentisse o que eu senti ao conseguir respondê-las pela primeira vez quando term
 
 <img style={{marginLeft:'auto', marginRight:'auto'}} width="200" height="300" src="https://i.giphy.com/media/MdqE46HziuFJTlIwjw/giphy.webp" />
 
-Primeiro vamos criar um simples modulo `math.js` com duas funções de matemática
+Primeiro vamos criar um simples modulo 
+com duas funções de matemática
 e escrever testes para essas funções:
+
+[vídeo exemplo](https://www.youtube.com/watch?v=Mdmku-aeFWY&list=PLD0snS-nm_ddcU02QkMXj885qEbwOWrMW&index=1)
 
 ```js
 const somar = (a, b) => a + b
@@ -45,6 +48,8 @@ o repo só em **último caso**, depois de tentar e pensar em como resolver por n
 
 Qual é o teste mais básico que você consegue pensar?
 Eis um exemplo com variáveis em inglês. No final desse post você entenderá a razão.
+
+[vídeo exemplo](https://www.youtube.com/watch?v=Wj1ot5_ZMOI&list=PLD0snS-nm_ddcU02QkMXj885qEbwOWrMW&index=2)
 
 ```js
 // teste-basico.js
@@ -68,6 +73,9 @@ Se não for, lança-se uma exceção.
 Para saber mais sobre asserção, lógica proposal [clique aqui.](https://www.infoescola.com/matematica/logica-proposicional/)
 
 Então, qual é o teste mais básico que poderíamos fazer para as nossas funções do módulo `math.js`?
+
+ [vídeo exemplo](https://www.youtube.com/watch?v=5ez3eBFQ2H8&list=PLD0snS-nm_ddcU02QkMXj885qEbwOWrMW&index=5)
+
 
 ```js
 // 1.js
@@ -132,6 +140,7 @@ Você sabia que o Node tem
 [module](https://nodejs.org/api/assert.html#assert_assert)
 para fazer *asserções* como as que fizemos acima🤔?
 Que tal refatorar o nosso teste para utilizar esse módulo?
+[vídeo exemplo](https://www.youtube.com/watch?v=o_Tw33BkBCM&list=PLD0snS-nm_ddcU02QkMXj885qEbwOWrMW&index=7)
 
 ```js
 // 2.js
@@ -188,6 +197,8 @@ Ao invés de chamar o módulo `assert` vamos criar uma função chamada `expect`
 
 Vamos criar um novo arquivo chamado 3.js:
 
+[vídeo exemplo](https://www.youtube.com/watch?v=_0nLi40wmBg&list=PLD0snS-nm_ddcU02QkMXj885qEbwOWrMW&index=4)
+
 ```js
 // 3.js
 const {somar, subtrair} = require('./math')
@@ -235,8 +246,9 @@ Melhor, mas ainda não tão claro como o nome da função. O que fazer então?
 ### Passo 4
 
 Criando o arquivo `4.js`.
-
 Vamos escrever uma função para nos ajudar a solucionar o nosso problema.😊
+
+[vídeo exemplo](https://www.youtube.com/watch?v=tQ-SgKw_TnM&list=PLD0snS-nm_ddcU02QkMXj885qEbwOWrMW&index=9)
 
 ```js
 const {somar, subtrair} = require('./math')
@@ -472,11 +484,11 @@ Um abraço,
 Igor Venancio
 
 
+**Obs.:** Criei uma **playlist** onde eu me gravei fazendo o passo a passo desse post. Para acessá-la
+[clique aqui.](https://www.youtube.com/playlist?list=PLD0snS-nm_ddcU02QkMXj885qEbwOWrMW)
 
 
-Obs.: **Compartilhe** com alguém que se interessaria por esse assunto.
-
-Fonte de inspiração: [post do Kent C Dodds sobre JS Test](https://kentcdodds.com/blog/but-really-what-is-a-javascript-test)
+Fonte de inspiração: [Kent C Dodds sobre JS Test](https://kentcdodds.com/blog/but-really-what-is-a-javascript-test)
 
 <div lg:flex>
   <img
