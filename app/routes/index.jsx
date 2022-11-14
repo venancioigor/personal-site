@@ -16,6 +16,7 @@ export default function Index() {
           </ul>
         </div>
       </div>
+      <script id="mcjs">!function(c,h,i,m,p){m = c.createElement(h), p = c.getElementsByTagName(h)[0], m.async = 1, m.src = i, p.parentNode.insertBefore(m, p)}(document,"script","https://chimpstatic.com/mcjs-connected/js/users/940db129975c24f3d1b233cac/0f79aa2d7981e20e939558344.js");</script>
     </body>
   );
 }
